@@ -12,11 +12,14 @@ function Header({ location }) {
       mode="horizontal"
       theme="dark"
     >
+      <Menu.Item key="/">
+        <Link to="/"><Icon type="home" />Home</Link>
+      </Menu.Item>
       <Menu.Item key="/users">
         <Link to="/users"><Icon type="bars" />Users</Link>
       </Menu.Item>
-      <Menu.Item key="/">
-        <Link to="/"><Icon type="home" />Home</Link>
+      <Menu.Item key="/test">
+        <Link to="/test"><Icon type="star" />Test</Link>
       </Menu.Item>
       <Menu.Item key="/404">
         <Link to="/page-you-dont-know"><Icon type="frown-circle" />404</Link>

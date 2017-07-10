@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Pagination, Popconfirm, Button } from 'antd';
+import { Table, Pagination, Popconfirm, Button, Layout, Breadcrumb } from 'antd';
 import { routerRedux } from 'dva/router';
+
 import styles from './Users.css';
 import { PAGE_SIZE } from '../../constants';
 import UserModal from './UserModal';
+
+const { Content } = Layout;
 
 function Users({ dispatch, list: dataSource, loading, total, page: current }) {
   // 删除
@@ -73,28 +76,34 @@ function Users({ dispatch, list: dataSource, loading, total, page: current }) {
   ];
 
   return (
-    <div className={styles.normal}>
-      <div>
-        <div className={styles.create}>
-          <UserModal record={{}} onOk={createHandler}>
-            <Button type="primary">Create User</Button>
-          </UserModal>
+    <div>
+      <Breadcrumb style={{ margin: '12px 0' }}>
+        <Breadcrumb.Item>Home</Breadcrumb.Item>
+        <Breadcrumb.Item>User</Breadcrumb.Item>
+      </Breadcrumb>
+      <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: '86vh' }}>
+        <div>
+          <div className={styles.create}>
+            <UserModal record={{}} onOk={createHandler}>
+              <Button type="primary">Create User</Button>
+            </UserModal>
+          </div>
+          <Table
+            columns={columns}
+            dataSource={dataSource}
+            rowKey={record => record.id}
+            pagination={false}
+            loading={loading}
+          />
+          <Pagination
+            className="ant-table-pagination"
+            total={total}
+            current={current}
+            pageSize={PAGE_SIZE}
+            onChange={pageChangeHandler}
+          />
         </div>
-        <Table
-          columns={columns}
-          dataSource={dataSource}
-          rowKey={record => record.id}
-          pagination={false}
-          loading={loading}
-        />
-        <Pagination
-          className="ant-table-pagination"
-          total={total}
-          current={current}
-          pageSize={PAGE_SIZE}
-          onChange={pageChangeHandler}
-        />
-      </div>
+      </Content>
     </div>
   );
 }

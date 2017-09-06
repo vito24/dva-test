@@ -2,13 +2,12 @@
  * Created by vito on 2017/7/4.
  */
 import React from 'react';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'dva/router';
 import styles from './MainLayout.css';
-// import Header from './Header';
 
 const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
+const { Header, Sider } = Layout;
 
 function MainLayout({ children, location }) {
   return (

@@ -1,15 +1,36 @@
 import React from 'react';
-import { Router, Route } from 'dva/router';
-import IndexPage from './routes/IndexPage';
-import Users from './routes/Users';
-import Test from './routes/Test';
+import { Router, Switch, Route } from 'dva/router';
+import dynamic from 'dva/dynamic';
 
-function RouterConfig({ history }) {
+function RouterConfig({ history, app }) {
+  const IndexPage = dynamic({
+    app,
+    component: () => import('./routes/IndexPage'),
+  });
+
+  const Users = dynamic({
+    app,
+    models: () => [
+      import('./models/users'),
+    ],
+    component: () => import('./routes/Users'),
+  });
+
+  const Test = dynamic({
+    app,
+    models: () => [
+      import('./models/test'),
+    ],
+    component: () => import('./routes/Test'),
+  });
+
   return (
     <Router history={history}>
-      <Route path="/" component={IndexPage} />
-      <Route path="/users" component={Users} />
-      <Route path="/test" component={Test} />
+      <Switch>
+        <Route exact path="/" component={IndexPage} />
+        <Route exact path="/users" component={Users} />
+        <Route exact path="/test" component={Test} />
+      </Switch>
     </Router>
   );
 }

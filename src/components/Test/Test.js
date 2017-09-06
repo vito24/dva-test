@@ -3,9 +3,10 @@
  */
 import React from 'react';
 import { connect } from 'dva';
-import { Layout, Breadcrumb } from 'antd';
+import { Layout, Breadcrumb, Form, Icon, Input, Button } from 'antd';
 
 const { Content } = Layout;
+const FormItem = Form.Item;
 
 function Test({dispatch}) {
   return (
@@ -15,7 +16,9 @@ function Test({dispatch}) {
         <Breadcrumb.Item>Test</Breadcrumb.Item>
       </Breadcrumb>
       <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: '86vh' }}>
-        test
+        <Form>
+
+        </Form>
       </Content>
     </div>
   )

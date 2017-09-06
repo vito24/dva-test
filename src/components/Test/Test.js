@@ -3,12 +3,11 @@
  */
 import React from 'react';
 import { connect } from 'dva';
-import { Layout, Breadcrumb, Form, Icon, Input, Button } from 'antd';
+import { Layout, Breadcrumb } from 'antd';
 
 const { Content } = Layout;
-const FormItem = Form.Item;
 
-function Test({dispatch}) {
+function Test() {
   return (
     <div>
       <Breadcrumb style={{ margin: '12px 0' }}>
@@ -16,12 +15,10 @@ function Test({dispatch}) {
         <Breadcrumb.Item>Test</Breadcrumb.Item>
       </Breadcrumb>
       <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: '86vh' }}>
-        <Form>
-
-        </Form>
+        test
       </Content>
     </div>
-  )
+  );
 }
 
 function mapStateToProps(state) {

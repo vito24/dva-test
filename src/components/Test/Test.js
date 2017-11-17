@@ -4,8 +4,10 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Layout, Breadcrumb } from 'antd';
+import PdfPreview from '../../components/pdfPreview/PdfPreview';
 
 const { Content } = Layout;
+const pdfUrl = 'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf';
 
 function Test() {
   return (
@@ -15,7 +17,9 @@ function Test() {
         <Breadcrumb.Item>Test</Breadcrumb.Item>
       </Breadcrumb>
       <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: '86vh' }}>
-        test
+        <PdfPreview src={pdfUrl}>
+          <a>预览PDF</a>
+        </PdfPreview>
       </Content>
     </div>
   );

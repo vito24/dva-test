@@ -18,8 +18,8 @@ const app = dva({
 // app.use({});
 app.use(createLoading());
 
-// 3. Model
-// Moved to router.js
+// 3. Register global model
+app.model(require('./models/global'));
 
 // 4. Router
 app.router(require('./router'));

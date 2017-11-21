@@ -4,7 +4,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Layout, Breadcrumb } from 'antd';
-import PdfPreview from '../../components/pdfPreview/PdfPreview';
+import PdfPreview from '../PdfPreview/PdfPreview';
 
 const { Content } = Layout;
 const pdfUrl = 'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf';

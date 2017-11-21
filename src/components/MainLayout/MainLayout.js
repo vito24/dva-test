@@ -4,30 +4,47 @@
 import React, { Component } from 'react';
 import { connect } from 'dva'
 import { Layout, Menu, Icon } from 'antd';
+import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'dva/router';
 import styles from './MainLayout.less';
 
 const { SubMenu } = Menu;
-const { Header, Sider } = Layout;
+const { Header, Sider, Content } = Layout;
 
 class MainLayout extends Component {
 
-  state = {
+  constructor(props) {
+    super(props);
+  }
 
-  };
+  componentWillUnmount() {
+    this.triggerResizeEvent.cancel();
+  }
 
-  onCollapse(a) {
-    console.log('=======');
+  onCollapse(collapsed) {
+    this.changeLayoutCollapsed(collapsed);
   }
 
   toggle() {
     const { collapsed } = this.props.global;
+    this.changeLayoutCollapsed(!collapsed);
+    this.triggerResizeEvent();
+  }
+
+  changeLayoutCollapsed(collapsed) {
     this.props.dispatch({
       type: 'global/changeLayoutCollapsed',
       payload: {
-        collapsed: !collapsed,
+        collapsed,
       },
     });
+  }
+
+  @Debounce(600)
+  triggerResizeEvent() {
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('resize', true, false);
+    window.dispatchEvent(event);
   }
 
   render() {
@@ -48,7 +65,7 @@ class MainLayout extends Component {
           breakpoint="md"
           collapsible
           collapsed={collapsed}
-          onCollapse={this.onCollapse}
+          onCollapse={this.onCollapse.bind(this)}
         >
           <div className={styles.logo}>
             <Link to="/">
@@ -106,9 +123,9 @@ class MainLayout extends Component {
               onClick={this.toggle.bind(this)}
             />
           </Header>
-          <Layout style={{ padding: '0 24px 24px' }}>
+          <Content style={{ margin: '24px 24px 0', height: '100%' }}>
             {children}
-          </Layout>
+          </Content>
         </Layout>
       </Layout>
     );

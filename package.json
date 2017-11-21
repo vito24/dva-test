@@ -31,6 +31,7 @@
     "expect": "^1.20.2",
     "husky": "^0.12.0",
     "lodash-decorators": "^4.5.0",
+    "lodash.clonedeep": "^4.5.0",
     "pdfjs-dist": "^2.0.120",
     "query-string": "^5.0.0",
     "redbox-react": "^1.5.0",

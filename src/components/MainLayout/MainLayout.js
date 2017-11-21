@@ -2,10 +2,10 @@
  * Created by vito on 2017/7/4.
  */
 import React, { Component } from 'react';
-import { connect } from 'dva'
+import { connect } from 'dva';
+import { Link, Route, Switch, Redirect } from 'dva/router';
 import { Layout, Menu, Icon } from 'antd';
 import Debounce from 'lodash-decorators/debounce';
-import { Link } from 'dva/router';
 import styles from './MainLayout.less';
 
 const { SubMenu } = Menu;
@@ -15,6 +15,7 @@ class MainLayout extends Component {
 
   constructor(props) {
     super(props);
+    this.menus = props.navData.reduce((arr, current) => arr.concat(current.children), []);
   }
 
   componentWillUnmount() {
@@ -23,6 +24,69 @@ class MainLayout extends Component {
 
   onCollapse(collapsed) {
     this.changeLayoutCollapsed(collapsed);
+  }
+
+  getNavMenuItems(menusData, parentPath = '') {
+    if (!menusData) {
+      return [];
+    }
+    return menusData.map((item) => {
+      if (!item.name) {
+        return null;
+      }
+      let itemPath = '';
+      if (item.path.indexOf('http') === 0) {
+        itemPath = item.path;
+      } else {
+        itemPath = `${parentPath}/${item.path || ''}`.replace(/\/+/g, '/');
+      }
+      if (item.children && item.children.some(child => child.name)) {
+        return (
+          <SubMenu
+            title={
+              item.icon ? (
+                <span>
+                  <Icon type={item.icon} />
+                  <span>{ item.name }</span>
+                </span>
+              ) : item.name
+            }
+            key={item.key || item.path}
+          >
+            {this.getNavMenuItems(item.children, itemPath)}
+          </SubMenu>
+        );
+      }
+      const icon = item.icon && <Icon type={item.icon} />;
+      return (
+        <Menu.Item key={item.key || item.path}>
+          {
+            /^https?:\/\//.test(itemPath) ? (
+              <a href={itemPath} target={item.target}>
+                {icon}<span>{ item.name }</span>
+              </a>
+            ) : (
+              <Link
+                to={itemPath}
+                target={item.target}
+                replace={itemPath === this.props.location.pathname}
+              >
+                {icon}<span>{ item.name }</span>
+              </Link>
+            )
+          }
+        </Menu.Item>
+      );
+    });
+  }
+
+  getCurrentMenuSelectedKeys(props) {
+    const { location: { pathname } } = props || this.props;
+    const keys = pathname.split('/').slice(1);
+    if (keys.length === 1 && keys[0] === '') {
+      return [this.menus[0].key];
+    }
+    return keys;
   }
 
   toggle() {
@@ -41,7 +105,7 @@ class MainLayout extends Component {
   }
 
   @Debounce(600)
-  triggerResizeEvent() {
+  triggerResizeEvent() { // eslint-disable-line
     const event = document.createEvent('HTMLEvents');
     event.initEvent('resize', true, false);
     window.dispatchEvent(event);
@@ -49,11 +113,10 @@ class MainLayout extends Component {
 
   render() {
     const {
-      children,
-      location,
       global: {
         collapsed,
       },
+      getRouteData,
     } = this.props;
 
     return (
@@ -77,42 +140,9 @@ class MainLayout extends Component {
             style={{ margin: '16px 0', width: '100%' }}
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={[location.pathname]}
-            defaultOpenKeys={['sub1']}
+            selectedKeys={this.getCurrentMenuSelectedKeys()}
           >
-            <SubMenu
-              key="sub1"
-              title={
-                <span>
-                  <Icon type="user" />
-                  <span>subnav 1</span>
-                </span>
-              }
-            >
-              <Menu.Item key="/">
-                <Link to="/"><Icon type="home" />Home</Link>
-              </Menu.Item>
-              <Menu.Item key="/users">
-                <Link to="/users"><Icon type="bars" />Users</Link>
-              </Menu.Item>
-              <Menu.Item key="/test">
-                <Link to="/test"><Icon type="star" />Test</Link>
-              </Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub2"
-              title={
-                <span>
-                  <Icon type="laptop" />
-                  <span>subnav 2</span>
-                </span>
-              }
-            >
-              <Menu.Item key="5">option5</Menu.Item>
-              <Menu.Item key="6">option6</Menu.Item>
-              <Menu.Item key="7">option7</Menu.Item>
-              <Menu.Item key="8">option8</Menu.Item>
-            </SubMenu>
+            {this.getNavMenuItems(this.menus)}
           </Menu>
         </Sider>
         <Layout>
@@ -124,7 +154,19 @@ class MainLayout extends Component {
             />
           </Header>
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>
-            {children}
+            <Switch>
+              {
+                getRouteData('MainLayout').map(item => (
+                  <Route
+                    exact={item.exact}
+                    key={item.path}
+                    path={item.path}
+                    component={item.component}
+                  />
+                ))
+              }
+              <Redirect exact from="/" to="/dashboard/index" />
+            </Switch>
           </Content>
         </Layout>
       </Layout>

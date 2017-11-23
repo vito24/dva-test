@@ -33,8 +33,11 @@
     "lodash-decorators": "^4.5.0",
     "lodash.clonedeep": "^4.5.0",
     "pdfjs-dist": "^2.0.120",
+    "prop-types": "^15.6.0",
     "query-string": "^5.0.0",
+    "react-document-title": "^2.0.3",
     "redbox-react": "^1.5.0",
-    "roadhog": "^1.2.2"
+    "roadhog": "^1.2.2",
+    "roadhog-api-doc": "^0.3.0"
   }
 }

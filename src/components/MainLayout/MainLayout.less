@@ -1,10 +1,10 @@
 @import "~antd/lib/style/themes/default.less";
 
-.sider {
-  min-height: 100vh;
-  box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
+.header {
+  padding: 0 12px 0 0;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
   position: relative;
-  z-index: 10;
 }
 
 .logo {
@@ -33,11 +33,11 @@
   }
 }
 
-.header {
-  padding: 0 12px 0 0;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
-  position: relative;
+:global(.ant-layout-sider-collapsed) .logo {
+  padding-left: 24px;
+  > a {
+    width: 32px;
+  }
 }
 
 .trigger {
@@ -49,5 +49,67 @@
 
   &:hover {
     background: @primary-1;
+  }
+}
+
+@media screen and (max-width: @screen-xs) {
+  .trigger {
+    display: none;
+  }
+}
+
+.sider {
+  min-height: 100vh;
+  box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
+  position: relative;
+  z-index: 10;
+}
+
+.right {
+  float: right;
+  height: 100%;
+
+  .action {
+    cursor: pointer;
+    padding: 0 12px;
+    display: inline-block;
+    transition: all .3s;
+    height: 100%;
+
+    > i {
+      font-size: 16px;
+      vertical-align: middle;
+    }
+
+    &:global(.ant-popover-open),
+    &:hover {
+      background: @primary-1;
+    }
+  }
+
+  .search {
+    padding: 0;
+    margin: 0 12px;
+    &:hover {
+      background: transparent;
+    }
+  }
+
+  .account {
+    .avatar {
+      margin: 20px 8px 20px 0;
+      color: @primary-color;
+      background: rgba(255, 255, 255, .85);
+      vertical-align: middle;
+    }
+  }
+}
+
+.menu {
+  :global(.anticon) {
+    margin-right: 8px;
+  }
+  :global(.ant-dropdown-menu-item) {
+    width: 160px;
   }
 }

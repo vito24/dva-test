@@ -6,7 +6,7 @@
 import React from 'react';
 import { Modal, Button, Spin } from 'antd';
 import { PDFJS } from 'pdfjs-dist';
-import styles from './PdfPreview.less';
+import styles from './index.less';
 
 class PDF extends React.Component {
   constructor(props) {

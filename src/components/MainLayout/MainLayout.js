@@ -6,12 +6,35 @@ import { connect } from 'dva';
 import { Link, Route, Switch, Redirect } from 'dva/router';
 import { Layout, Menu, Icon, Dropdown, Avatar } from 'antd';
 import Debounce from 'lodash-decorators/debounce';
+import classNames from 'classnames';
 import DocumentTitle from 'react-document-title';
+import { ContainerQuery } from 'react-container-query';
 import HeaderSearch from '../HeaderSearch';
 import styles from './MainLayout.less';
 
 const { SubMenu } = Menu;
 const { Header, Sider, Content } = Layout;
+
+const query = {
+  'screen-xs': {
+    maxWidth: 575,
+  },
+  'screen-sm': {
+    minWidth: 576,
+    maxWidth: 767,
+  },
+  'screen-md': {
+    minWidth: 768,
+    maxWidth: 991,
+  },
+  'screen-lg': {
+    minWidth: 992,
+    maxWidth: 1199,
+  },
+  'screen-xl': {
+    minWidth: 1200,
+  },
+};
 
 class MainLayout extends Component {
 
@@ -181,78 +204,86 @@ class MainLayout extends Component {
       </Menu>
     );
 
-    return (
-      <DocumentTitle title={this.getPageTitle()}>
-        <Layout>
-          <Sider
-            className={styles.sider}
-            width={256}
-            trigger={null}
-            breakpoint="md"
-            collapsible
-            collapsed={collapsed}
-            onCollapse={this.onCollapse.bind(this)}
+    const layout = (
+      <Layout>
+        <Sider
+          className={styles.sider}
+          width={256}
+          trigger={null}
+          breakpoint="md"
+          collapsible
+          collapsed={collapsed}
+          onCollapse={this.onCollapse.bind(this)}
+        >
+          <div className={styles.logo}>
+            <Link to="/">
+              <img src="https://gw.alipayobjects.com/zos/rmsportal/iwWyPinUoseUxIAeElSx.svg" alt="logo" />
+              <h1>VITO</h1>
+            </Link>
+          </div>
+          <Menu
+            style={{ margin: '16px 0', width: '100%' }}
+            theme="dark"
+            mode="inline"
+            selectedKeys={this.getCurrentMenuSelectedKeys()}
+            {...menuProps}
           >
-            <div className={styles.logo}>
-              <Link to="/">
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/iwWyPinUoseUxIAeElSx.svg" alt="logo" />
-                <h1>VITO</h1>
-              </Link>
-            </div>
-            <Menu
-              style={{ margin: '16px 0', width: '100%' }}
-              theme="dark"
-              mode="inline"
-              selectedKeys={this.getCurrentMenuSelectedKeys()}
-              {...menuProps}
-            >
-              {this.getNavMenuItems(this.menus)}
-            </Menu>
-          </Sider>
-          <Layout>
-            <Header className={styles.header}>
-              <Icon
-                className={styles.trigger}
-                type={collapsed ? 'menu-unfold' : 'menu-fold'}
-                onClick={this.toggle.bind(this)}
+            {this.getNavMenuItems(this.menus)}
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header className={styles.header}>
+            <Icon
+              className={styles.trigger}
+              type={collapsed ? 'menu-unfold' : 'menu-fold'}
+              onClick={this.toggle.bind(this)}
+            />
+            <div className={styles.right}>
+              <HeaderSearch
+                className={`${styles.action} ${styles.search}`}
+                placeholder="站内搜索"
+                dataSource={['搜索提示一', '搜索提示二', '搜索提示三']}
+                onSearch={(value) => {
+                  console.log('input', value); // eslint-disable-line
+                }}
+                onPressEnter={(value) => {
+                  console.log('enter', value); // eslint-disable-line
+                }}
               />
-              <div className={styles.right}>
-                <HeaderSearch
-                  className={`${styles.action} ${styles.search}`}
-                  placeholder="站内搜索"
-                  dataSource={['搜索提示一', '搜索提示二', '搜索提示三']}
-                  onSearch={(value) => {
-                    console.log('input', value); // eslint-disable-line
-                  }}
-                  onPressEnter={(value) => {
-                    console.log('enter', value); // eslint-disable-line
-                  }}
-                />
-                <Dropdown overlay={menu}>
+              <Dropdown overlay={menu}>
                   <span className={`${styles.action} ${styles.account}`}>
                     <Avatar size="small" className={styles.avatar} src={avatar} />
                     { name }
                   </span>
-                </Dropdown>
-              </div>
-            </Header>
-            <Content style={{ margin: '24px 24px 0', height: '100%' }}>
-              <Switch>
-                {
-                  getRouteData('MainLayout').map(item => (
-                    <Route
-                      exact={item.exact}
-                      key={item.path}
-                      path={item.path}
-                      component={item.component}
-                    />
-                  ))
-                }
-                <Redirect exact from="/" to="/dashboard/index" />
-              </Switch>
-            </Content>
-          </Layout>
+              </Dropdown>
+            </div>
+          </Header>
+          <Content style={{ margin: '24px 24px 0', height: '100%' }}>
+            <Switch>
+              {
+                getRouteData('MainLayout').map(item => (
+                  <Route
+                    exact={item.exact}
+                    key={item.path}
+                    path={item.path}
+                    component={item.component}
+                  />
+                ))
+              }
+              <Redirect exact from="/" to="/dashboard/analysis" />
+            </Switch>
+          </Content>
         </Layout>
+      </Layout>
+    );
+
+    return (
+      <DocumentTitle title={this.getPageTitle()}>
+        <ContainerQuery query={query}>
+          {
+            params => <div className={classNames(params)}>{ layout }</div>
+          }
+        </ContainerQuery>
       </DocumentTitle>
     );
   }

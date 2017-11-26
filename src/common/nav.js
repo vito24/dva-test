@@ -23,7 +23,7 @@ export const getNavData = app => [{
     children: [{
       name: '分析页',
       path: 'analysis',
-      component: dynamicWrapper(app, [], import('../routes/Dashboard/Analysis')),
+      component: dynamicWrapper(app, ['chart'], import('../routes/Dashboard/Analysis')),
     }, {
       name: 'IndexPage',
       path: 'index',

@@ -1,4 +1,5 @@
 import { format, delay } from 'roadhog-api-doc';
+import { getFakeChartData } from './mock/chart';
 
 const proxy = {
   'GET /api/currentUser': {
@@ -16,6 +17,8 @@ const proxy = {
       notifyCount: 12,
     },
   },
+
+  'GET /api/fake_chart_data': getFakeChartData,
 };
 
 export default delay(proxy, 1000);

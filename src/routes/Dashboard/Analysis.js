@@ -3,14 +3,27 @@
  */
 
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import { Row, Col, Tooltip, Icon } from 'antd';
 import numeral from 'numeral';
-import { yuan, ChartCard, Field } from '../../components/Charts';
+import { yuan, ChartCard, Field, MiniArea } from '../../components/Charts';
 import Trend from '../../components/Trend';
 
 import styles from './Analysis.less';
 
+@connect(state => ({
+  chart: state.chart,
+}))
 class Analysis extends Component {
+  state = {
+    loading: true,
+  };
+
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'chart/fetch',
+    }).then(() => this.setState({ loading: false }));
+  }
 
   render() {
     const topColResponsiveProps = {
@@ -21,6 +34,8 @@ class Analysis extends Component {
       xl: 6,
       style: { marginBottom: 24 },
     };
+
+    const { visitData } = this.props;
 
     return (
       <div>
@@ -40,6 +55,22 @@ class Analysis extends Component {
               <Trend flag="down">
                 日环比<span className={styles.trendText}>11%</span>
               </Trend>
+            </ChartCard>
+          </Col>
+          <Col {...topColResponsiveProps}>
+            <ChartCard
+              bordered={false}
+              title="访问量"
+              action={<Tooltip title="指标说明"><Icon type="info-circle-o" /></Tooltip>}
+              total={numeral(8846).format('0,0')}
+              footer={<Field label="日访问量" value={numeral(1234).format('0,0')} />}
+              contentHeight={46}
+            >
+              <MiniArea
+                color="#975FE4"
+                height={46}
+                data={visitData}
+              />
             </ChartCard>
           </Col>
         </Row>

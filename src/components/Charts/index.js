@@ -5,6 +5,7 @@
 import numeral from 'numeral';
 import ChartCard from './ChartCard';
 import Field from './Field';
+import MiniArea from './MiniArea';
 
 const yuan = val => `&yen; ${numeral(val).format('0,0')}`;
 
@@ -12,4 +13,5 @@ export default {
   yuan,
   ChartCard,
   Field,
+  MiniArea,
 };

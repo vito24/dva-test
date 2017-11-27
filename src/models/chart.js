@@ -12,10 +12,10 @@ export default {
   },
 
   reducers: {
-    saveCurrentUser(state, action) {
+    save(state, { payload }) {
       return {
         ...state,
-        currentUser: action.payload,
+        ...payload,
       };
     },
   },

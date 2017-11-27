@@ -35,7 +35,7 @@ class Analysis extends Component {
       style: { marginBottom: 24 },
     };
 
-    const { visitData } = this.props;
+    const { chart: visitData } = this.props;
 
     return (
       <div>

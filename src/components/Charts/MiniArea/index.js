@@ -112,7 +112,7 @@ class MiniArea extends PureComponent {
     if (line) {
       const view2 = chart.createView();
       view2.source(data, dataConfig);
-      view.line().position('x*y').color(borderColor).size(borderWidth)
+      view2.line().position('x*y').color(borderColor).size(borderWidth)
         .shape('smooth');
       view2.tooltip(false);
     }

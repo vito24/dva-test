@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Row, Col, Tooltip, Icon } from 'antd';
 import numeral from 'numeral';
-import { yuan, ChartCard, Field, MiniArea } from '../../components/Charts';
+import { yuan, ChartCard, Field, MiniArea, MiniBar, MiniProgress } from '../../components/Charts';
 import Trend from '../../components/Trend';
 
 import styles from './Analysis.less';
@@ -71,6 +71,47 @@ class Analysis extends Component {
                 color="#975FE4"
                 height={46}
                 data={visitData}
+              />
+            </ChartCard>
+          </Col>
+          <Col {...topColResponsiveProps}>
+            <ChartCard
+              bordered={false}
+              title="支付笔数"
+              action={<Tooltip title="指标说明"><Icon type="info-circle-o" /></Tooltip>}
+              total={numeral(6560).format('0,0')}
+              footer={<Field label="转化率" value="60%" />}
+              contentHeight={46}
+            >
+              <MiniBar
+                height={46}
+                data={visitData}
+              />
+            </ChartCard>
+          </Col>
+          <Col {...topColResponsiveProps}>
+            <ChartCard
+              bordered={false}
+              title="运营活动效果"
+              action={<Tooltip title="指标说明"><Icon type="info-circle-o" /></Tooltip>}
+              total="78%"
+              footer={
+                <div style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                  <Trend flag="up" style={{ marginRight: 16 }}>
+                    周同比<span className={styles.trendText}>12%</span>
+                  </Trend>
+                  <Trend flag="down">
+                    日环比<span className={styles.trendText}>11%</span>
+                  </Trend>
+                </div>
+              }
+              contentHeight={46}
+            >
+              <MiniProgress
+                percent={78}
+                strokeWidth={8}
+                target={80}
+                color="#13C2C2"
               />
             </ChartCard>
           </Col>

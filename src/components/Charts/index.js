@@ -11,7 +11,7 @@ import MiniProgress from './MiniProgress';
 
 const yuan = val => `&yen; ${numeral(val).format('0,0')}`;
 
-export default {
+export {
   yuan,
   ChartCard,
   Field,

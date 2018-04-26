@@ -9,7 +9,6 @@
     "production": {}
   },
   "extraBabelPlugins": [
-    "transform-decorators-legacy",
     ["import", { "libraryName": "antd", "style": true }]
   ],
   "proxy": {
